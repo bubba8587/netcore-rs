@@ -1,6 +1,6 @@
 # Upstream reference
 
-The pinned rete source Ruggine ports from ([[B1]] upstreamIsSpec). Read-only: never edit
+The pinned rete source netcore-rs ports from ([[B1]] upstreamIsSpec). Read-only: never edit
 these files, re-copy them to move the pin. Only `src/`, `test/`, `LICENSE`, `README.md` and
 `package.json` are kept from each repo.
 

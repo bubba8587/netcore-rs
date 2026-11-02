@@ -10,7 +10,7 @@ Open problems and the latest session digests. Older digests move to
   [[B2]] browserAndDesktop, [[B3]] preAlphaBreakFreely, all unratified); the mechanics and every
   divergence are in `tree/specs/port.md`.
 - Upstream is checked directly: `tools/oracle/` runs scenarios on the pinned upstream and
-  `ruggine-engine/tests/oracle.rs` must give the same answers (27 scenarios: work order,
+  `netcore-engine/tests/oracle.rs` must give the same answers (27 scenarios: work order,
   concurrency, cancellation, reset, errors, editor events, key order, control flow).
 - Shared work runs on a per-thread queue standing in for JS's microtask queue: flat stack (50,000
   nodes native, 20,000 in debug wasm with real JS promises) and upstream's order of work.
@@ -23,7 +23,7 @@ Open problems and the latest session digests. Older digests move to
   finishes and isn't freed, as upstream's never finishes.
 - Second round:
   - Random sequences recorded from upstream (`tools/oracle/fuzz.cjs`, 600 cases) are replayed
-    by `oracle_fuzz.rs`; the guarantee they hold Ruggine to is in `tree/specs/port.md` §
+    by `oracle_fuzz.rs`; the guarantee they hold netcore-rs to is in `tree/specs/port.md` §
     Futures.
   - Parity: `engine.cache()` / `dataflow()`, `ControlFlowEngine::control_flow()`,
     `Cancellable::resolved`.
@@ -32,8 +32,8 @@ Open problems and the latest session digests. Older digests move to
     Solenoid's own rete patterns.
 - Third round: the engines run any node type given a `with_configure` (only `new()` needs
   `ClassicNode`), which Solenoid's JS-hosted nodes need; `tests/configure.rs`. Solenoid's
-  `solenoid/tsrs` now runs its dataflow on Ruggine, pinned by git revision.
-- Settled by the author: Ruggine is Rust-only ([[B10]] rustOnly); Solenoid reaches it by moving
+  `solenoid/tsrs` now runs its dataflow on netcore-rs, pinned by git revision.
+- Settled by the author: netcore-rs is Rust-only ([[B10]] rustOnly); Solenoid reaches it by moving
   its graph layer into its Rust core.
 - Fourth round (2026-10-23): `NodeEditor::reorder_nodes(order)`, beyond rete, for Solenoid's
-  stacking order now that its graph model is a Ruggine editor (`port.md` § Editor).
+  stacking order now that its graph model is a netcore-rs editor (`port.md` § Editor).

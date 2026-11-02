@@ -1,13 +1,13 @@
 // [[A1]] rustRete
-//! The workloads `tools/bench/compare.mjs` times on Ruggine; `tools/bench/upstream.cjs` runs the
+//! The workloads `tools/bench/compare.mjs` times on netcore-rs; `tools/bench/upstream.cjs` runs the
 //! same ones on upstream rete. Each returns milliseconds, the median of several runs.
 
 use std::rc::Rc;
 
-use ruggine::classic::{ClassicNode, Connection, Input, Node, Output, Socket};
-use ruggine::future::{LocalBoxFuture, join_all, now_or_never, ready};
-use ruggine::{GetSchemes, NodeBase, NodeEditor, keymap};
-use ruggine_engine::{DataflowEngine, DataflowNode, Error, Inputs, Outputs};
+use netcore::classic::{ClassicNode, Connection, Input, Node, Output, Socket};
+use netcore::future::{LocalBoxFuture, join_all, now_or_never, ready};
+use netcore::{GetSchemes, NodeBase, NodeEditor, keymap};
+use netcore_engine::{DataflowEngine, DataflowNode, Error, Inputs, Outputs};
 
 pub struct Calc {
     node: Node,

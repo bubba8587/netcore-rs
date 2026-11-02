@@ -1,6 +1,6 @@
 // [[B1]] upstreamIsSpec
 // Random operation sequences, run on upstream and recorded with their traces; oracle_fuzz.rs
-// replays the same operations on Ruggine and must produce the same traces.
+// replays the same operations on netcore-rs and must produce the same traces.
 
 function rng(seed) {
   let a = seed >>> 0

@@ -1,6 +1,6 @@
 // [[B1]] upstreamIsSpec
 // Records upstream's answers to scenarios.cjs in fixtures/oracle.json, which
-// crates/ruggine-engine/tests/oracle.rs replays against the port.
+// crates/netcore-engine/tests/oracle.rs replays against the port.
 // Usage: node tools/oracle/run.mjs   (needs tsc on PATH)
 import { writeFileSync } from 'node:fs'
 import { createRequire } from 'node:module'

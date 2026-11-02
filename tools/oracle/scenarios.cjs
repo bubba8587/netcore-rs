@@ -1,6 +1,6 @@
 // [[B1]] upstreamIsSpec
 // Each scenario runs against upstream rete and returns a JSON answer. oracle.rs runs the same
-// scenario, by the same name, against Ruggine and must produce the same JSON.
+// scenario, by the same name, against netcore-rs and must produce the same JSON.
 
 function graph({ rete, engine }, opts = {}) {
   const { NodeEditor, ClassicPreset } = rete

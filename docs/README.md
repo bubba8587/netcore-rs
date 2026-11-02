@@ -2,8 +2,8 @@
 
 | Doc | What it holds |
 |---|---|
-| `migrating-from-rete.md` | every rete and rete-engine symbol, and how it reads in Ruggine |
-| `benchmarks.md` | Ruggine against rete, workload by workload |
+| `migrating-from-rete.md` | every rete and rete-engine symbol, and how it reads in netcore-rs |
+| `benchmarks.md` | netcore-rs against rete, workload by workload |
 | `dte.md` | how this repo keeps its decision tree |
 | `backlog.md` | open items only |
 | `dev-notes.md` | the current session's digest and open problems |
@@ -15,4 +15,4 @@
 
 | Code | Spec |
 |---|---|
-| `crates/ruggine/src/*`, `crates/ruggine-engine/src/*` | `tree/specs/port.md` |
+| `crates/netcore/src/*`, `crates/netcore-engine/src/*` | `tree/specs/port.md` |

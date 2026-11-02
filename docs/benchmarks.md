@@ -1,13 +1,13 @@
 # Benchmarks
 
-Ruggine against upstream rete on the same workloads, measured 2026-10-22 on a 4-core Intel Xeon
+netcore-rs against upstream rete on the same workloads, measured 2026-10-22 on a 4-core Intel Xeon
 at 2.8 GHz (a shared cloud container, so expect noise of 10 to 30% between runs), Node 22 and
 Rust 1.99. Rerun with `node tools/bench/compare.mjs [sizes] [runs]`.
 
 - **rete (Node):** the pinned upstream source, compiled as in `tools/oracle/`, in Node.
-- **Ruggine native:** `bench/` in release mode.
-- **Ruggine wasm:** the same crate compiled to `wasm32-unknown-unknown` (release) and run in
-  the same Node, so the wasm column is the closest stand-in for Ruggine in a browser.
+- **netcore-rs native:** `bench/` in release mode.
+- **netcore-rs wasm:** the same crate compiled to `wasm32-unknown-unknown` (release) and run in
+  the same Node, so the wasm column is the closest stand-in for netcore-rs in a browser.
 
 Every workload is a graph of identical nodes, each with one many-connection input and one output
 whose data adds 1 to the sum of its inputs. The workloads are defined twice, once per side,
@@ -26,7 +26,7 @@ in `bench/src/lib.rs` and `tools/bench/upstream.cjs`:
 
 ### 1,000 nodes (median of 7 runs, ms)
 
-| Workload | rete (Node) | Ruggine native | Ruggine wasm | native vs rete | wasm vs rete |
+| Workload | rete (Node) | netcore-rs native | netcore-rs wasm | native vs rete | wasm vs rete |
 |---|---:|---:|---:|---:|---:|
 | create_nodes | 18.1 | 0.540 | 1.0 | 33× | 18× |
 | add_nodes | 7.2 | 0.630 | 1.0 | 11× | 6.8× |
@@ -42,7 +42,7 @@ in `bench/src/lib.rs` and `tools/bench/upstream.cjs`:
 
 ### 10,000 nodes (median of 7 runs, ms)
 
-| Workload | rete (Node) | Ruggine native | Ruggine wasm | native vs rete | wasm vs rete |
+| Workload | rete (Node) | netcore-rs native | netcore-rs wasm | native vs rete | wasm vs rete |
 |---|---:|---:|---:|---:|---:|
 | create_nodes | 197 | 14.4 | 12.3 | 14× | 16× |
 | add_nodes | 666 | 8.6 | 7.3 | 78× | 91× |
@@ -58,12 +58,12 @@ in `bench/src/lib.rs` and `tools/bench/upstream.cjs`:
 
 ## Reading it
 
-- The gap grows with the graph because several of rete's operations are linear where Ruggine's
+- The gap grows with the graph because several of rete's operations are linear where netcore-rs's
   are constant: `getNode` scans the node list, a fetch scans every connection once per node
-  (so a whole-graph fetch is quadratic), and `addNode` checks for duplicates with a scan. Ruggine
+  (so a whole-graph fetch is quadratic), and `addNode` checks for duplicates with a scan. netcore-rs
   keeps an id index and indexes connections by node (`tree/specs/port.md` § Editor).
 - rete's `reset` recurses once per node downstream; at 10,000 nodes in a chain it overflows
-  Node's stack. Ruggine walks the graph with a work list.
+  Node's stack. netcore-rs walks the graph with a work list.
 - wasm runs close to native here, sometimes ahead, because the wasm build's allocator happens
   to suit this allocation pattern.
 

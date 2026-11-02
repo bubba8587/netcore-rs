@@ -1,6 +1,6 @@
 # Decision provenance — DTE
 
-Ruggine keeps the *why* behind its code as a DTE (Decision Tree Engineering) tree, the same
+netcore-rs keeps the *why* behind its code as a DTE (Decision Tree Engineering) tree, the same
 way Solenoid does. The tool is `tools/dte.py` and the vendored rules are `dte-rules/`, both
 copied from Solenoid; Solenoid's `docs/dte.md` explains the local patches the tool carries
 and the practice on top of DTE's rules, and that practice applies here unchanged.

@@ -137,6 +137,35 @@ dependencies = [
 ]
 
 [[package]]
+name = "netcore"
+version = "0.1.0"
+dependencies = [
+ "getrandom",
+ "wasm-bindgen-test",
+]
+
+[[package]]
+name = "netcore-bench"
+version = "0.1.0"
+dependencies = [
+ "netcore",
+ "netcore-engine",
+ "wasm-bindgen",
+]
+
+[[package]]
+name = "netcore-engine"
+version = "0.1.0"
+dependencies = [
+ "js-sys",
+ "netcore",
+ "serde",
+ "serde_json",
+ "wasm-bindgen-futures",
+ "wasm-bindgen-test",
+]
+
+[[package]]
 name = "nu-ansi-term"
 version = "0.50.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -196,35 +225,6 @@ name = "r-efi"
 version = "5.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "69cdb34c158ceb288df11e18b4bd39de994f6657d83847bdffdbd7f346754b0f"
-
-[[package]]
-name = "ruggine"
-version = "0.1.0"
-dependencies = [
- "getrandom",
- "wasm-bindgen-test",
-]
-
-[[package]]
-name = "ruggine-bench"
-version = "0.1.0"
-dependencies = [
- "ruggine",
- "ruggine-engine",
- "wasm-bindgen",
-]
-
-[[package]]
-name = "ruggine-engine"
-version = "0.1.0"
-dependencies = [
- "js-sys",
- "ruggine",
- "serde",
- "serde_json",
- "wasm-bindgen-futures",
- "wasm-bindgen-test",
-]
 
 [[package]]
 name = "rustversion"

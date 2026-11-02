@@ -1,13 +1,13 @@
 [workspace]
 resolver = "3"
-members = ["crates/ruggine", "crates/ruggine-engine", "bench"]
+members = ["crates/netcore", "crates/netcore-engine", "bench"]
 
 [workspace.package]
 version = "0.1.0"
 edition = "2024"
 rust-version = "1.86"
 license = "MIT"
-repository = "https://github.com/bubba8587/ruggine"
+repository = "https://github.com/bubba8587/netcore-rs"
 keywords = ["node-editor", "dataflow", "graph", "rete", "visual-programming"]
 categories = ["data-structures", "asynchronous", "wasm"]
 publish = false

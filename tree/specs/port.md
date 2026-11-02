@@ -4,7 +4,7 @@ tags: [spec, port]
 ---
 <!-- [[B1]] upstreamIsSpec, [[B2]] browserAndDesktop -->
 
-# Spec: how upstream maps onto Ruggine
+# Spec: how upstream maps onto netcore-rs
 
 Serves [[B1]] upstreamIsSpec and [[B2]] browserAndDesktop. Upstream is `rete` 2.0.6 and
 `rete-engine` 2.1.1 in `upstream/`. Every upstream module and test has a Rust home; this spec
@@ -19,13 +19,13 @@ difference not listed here is a bug.
   "Beyond upstream's suite" line; every divergence below has one.
 - The oracle: `tools/oracle/scenarios.cjs` runs scenarios against the pinned upstream itself
   (`node tools/oracle/run.mjs` compiles `upstream/` and records the answers in
-  `fixtures/oracle.json`), and `ruggine-engine/tests/oracle.rs` replays each scenario, by name,
-  against Ruggine. Any behavior where order or concurrency matters gets a scenario there rather
+  `fixtures/oracle.json`), and `netcore-engine/tests/oracle.rs` replays each scenario, by name,
+  against netcore-rs. Any behavior where order or concurrency matters gets a scenario there rather
   than an expectation written by hand.
 - The fuzzer: `tools/oracle/fuzz.cjs` generates 300 random operation sequences with one
   operation at a time and 300 with several fetches in flight, runs them on upstream and records
   each trace in `fixtures/oracle-fuzz.json` (by `run.mjs`); `oracle_fuzz.rs` replays them,
-  driving the queue as a JS host would, and holds Ruggine to the guarantees in § Futures.
+  driving the queue as a JS host would, and holds netcore-rs to the guarantees in § Futures.
 - Moving the pin: `upstream/README.md`; then rerun the oracle and diff old and new `src/` and
   `test/` against this spec.
 
@@ -33,21 +33,21 @@ difference not listed here is a bug.
 
 | Upstream | Rust | Tests |
 |---|---|---|
-| `rete/src/types.ts` | `ruggine::types` | (types only) |
-| `rete/src/utils.ts` `getUID` | `ruggine::uid` | `ruggine/tests/uid.rs` |
-| `rete/src/scope.ts` | `ruggine::scope` | `ruggine/tests/scope.rs` |
-| `rete/src/editor.ts` | `ruggine::editor` | `ruggine/tests/editor.rs`, `perf.rs` |
-| `rete/src/presets/classic.ts` | `ruggine::classic` | `ruggine/tests/classic.rs` |
-| `rete/src/utility-types.ts` | the `Accepts` and `Plugin` bounds in `ruggine::scope` | compile-time |
-| `rete-engine/src/dataflow.ts` | `ruggine_engine::dataflow` | `ruggine-engine/tests/dataflow.rs` |
-| `rete-engine/src/dataflow-engine.ts` | `ruggine_engine::dataflow_engine` | `dataflow_engine.rs`, `dyn_nodes.rs` |
-| `rete-engine/src/control-flow.ts` | `ruggine_engine::control_flow` | `control_flow.rs` |
-| `rete-engine/src/control-flow-engine.ts` | `ruggine_engine::control_flow_engine` | `control_flow_engine.rs` |
-| `rete-engine/src/utils/cache.ts` | `ruggine_engine::cache` | `cache.rs` |
-| `rete-engine/src/utils/cancellable.ts` | `ruggine_engine::cancellable` | `cancellable.rs` |
-| (JS objects keyed by name) | `ruggine::keymap::KeyMap` | `ruggine/tests/keymap.rs` |
-| (promises, `Promise.all`, the microtask queue) | `ruggine::future` | `ruggine/tests/future.rs`, `ruggine-engine/tests/real_wakeups.rs` |
-| (upstream's own answers) | `fixtures/oracle.json` | `ruggine-engine/tests/oracle.rs` |
+| `rete/src/types.ts` | `netcore::types` | (types only) |
+| `rete/src/utils.ts` `getUID` | `netcore::uid` | `netcore/tests/uid.rs` |
+| `rete/src/scope.ts` | `netcore::scope` | `netcore/tests/scope.rs` |
+| `rete/src/editor.ts` | `netcore::editor` | `netcore/tests/editor.rs`, `perf.rs` |
+| `rete/src/presets/classic.ts` | `netcore::classic` | `netcore/tests/classic.rs` |
+| `rete/src/utility-types.ts` | the `Accepts` and `Plugin` bounds in `netcore::scope` | compile-time |
+| `rete-engine/src/dataflow.ts` | `netcore_engine::dataflow` | `netcore-engine/tests/dataflow.rs` |
+| `rete-engine/src/dataflow-engine.ts` | `netcore_engine::dataflow_engine` | `dataflow_engine.rs`, `dyn_nodes.rs` |
+| `rete-engine/src/control-flow.ts` | `netcore_engine::control_flow` | `control_flow.rs` |
+| `rete-engine/src/control-flow-engine.ts` | `netcore_engine::control_flow_engine` | `control_flow_engine.rs` |
+| `rete-engine/src/utils/cache.ts` | `netcore_engine::cache` | `cache.rs` |
+| `rete-engine/src/utils/cancellable.ts` | `netcore_engine::cancellable` | `cancellable.rs` |
+| (JS objects keyed by name) | `netcore::keymap::KeyMap` | `netcore/tests/keymap.rs` |
+| (promises, `Promise.all`, the microtask queue) | `netcore::future` | `netcore/tests/future.rs`, `netcore-engine/tests/real_wakeups.rs` |
+| (upstream's own answers) | `fixtures/oracle.json` | `netcore-engine/tests/oracle.rs` |
 
 Names are upstream's in snake_case. A JS method that throws returns `Result`, with upstream's
 message as the error's `Display`. `editor.use(x)` is `use_scope` (`use` is a Rust keyword).
@@ -58,7 +58,7 @@ values are one type `V` per engine (see Dataflow).
 
 - Async because upstream is: Solenoid has nodes whose data really waits (frames, scripts, live
   connections, composites) and relies on `reset` cancelling a fetch in flight. Futures are
-  `!Send`, single-threaded like JavaScript, and nothing in Ruggine spawns threads or blocks: any
+  `!Send`, single-threaded like JavaScript, and nothing in netcore-rs spawns threads or blocks: any
   host's executor drives them, and `future::now_or_never` finishes any graph whose pipes and
   nodes are synchronous, including from inside a node's `data`.
 - Eager where upstream is eager. A JS async function runs synchronously up to its first `await`,
@@ -81,9 +81,9 @@ values are one type `V` per engine (see Dataflow).
   (an input with no setup fails at once while its siblings' work is queued).
 - Work nobody awaits any more (the siblings of a fetch that failed) runs whenever the queue next
   runs. `future::background()` is the host's event loop for it: spawned once, it runs the queue
-  dry every time work arrives, so that work finishes as it would in JS even if Ruggine is never
+  dry every time work arrives, so that work finishes as it would in JS even if netcore-rs is never
   called again.
-- What matches upstream, checked by `ruggine-engine/tests/oracle_fuzz.rs` on random operation
+- What matches upstream, checked by `netcore-engine/tests/oracle_fuzz.rs` on random operation
   sequences recorded from upstream (`tools/oracle/fuzz.cjs`): every operation's result and every
   editor event, in order, and the set of node work that runs. What can differ, because it
   follows from how many microtask turns each step of upstream's promise chain takes (a node
@@ -140,7 +140,7 @@ values are one type `V` per engine (see Dataflow).
   loops over nodes, which a scan makes quadratic. List order is insertion order, and removal keeps
   the rest in order, so nothing observable changes. A removal leaves a gap that a later
   compaction closes, so removing is constant time on average where shifting the list (upstream's
-  `splice`) is linear. Internal maps hash with Fx (`ruggine::fxhash`), not SipHash: ids are local
+  `splice`) is linear. Internal maps hash with Fx (`netcore::fxhash`), not SipHash: ids are local
   data, not hostile input. A node's id must not change while it is in the editor.
 - `get_connections_to(node)` / `get_connections_from(node)` answer upstream's
   `getConnections().filter(c => c.target === node)` (or `source`) from an index, in the same
@@ -186,7 +186,7 @@ values are one type `V` per engine (see Dataflow).
   `classic()`); a connection type implements `ClassicConnection`. The engines and
   `Connection::new` only read through those traits, and only the engines' `new()` needs
   `ClassicNode`: with `with_configure`, as upstream's `configure` argument, any node type works
-  (`ruggine-engine/tests/configure.rs`).
+  (`netcore-engine/tests/configure.rs`).
 
 ## Dataflow
 
@@ -241,11 +241,11 @@ values are one type `V` per engine (see Dataflow).
 
 ## Solenoid's calls
 
-How Solenoid's rete calls read in Ruggine, for the port of Solenoid's graph layer
-(`ruggine-engine/tests/solenoid_patterns.rs` runs these patterns: cycle seeding, invalidation, a
+How Solenoid's rete calls read in netcore-rs, for the port of Solenoid's graph layer
+(`netcore-engine/tests/solenoid_patterns.rs` runs these patterns: cycle seeding, invalidation, a
 pass that survives a reset, composites):
 
-| Solenoid (TS) | Ruggine |
+| Solenoid (TS) | netcore-rs |
 |---|---|
 | `new NodeEditor<Schemes>()` | `NodeEditor::<Schemes>::new()` |
 | `editor.getNode(id)` / `getNodes()` | `get_node(id)` / `get_nodes()` |
@@ -257,4 +257,4 @@ pass that survives a reset, composites):
 | `engine.cache.delete(id)`, `engine.cache.add(id, seeded)` (graphCompute.ts) | `engine.cache().delete(id)`, `engine.cache().add(id, Cancellable::resolved(..))` |
 | a "live" flag to neutralize a pipe on cleanup | `editor.remove_pipe(id)` |
 | its own `invalidate`, because `engine.reset` overflows on a cycle | `engine.reset(Some(id))` is cycle-safe (it clears only through outputs the setups list, as upstream does) |
-| `class X extends ClassicPreset.Node` | a struct holding a `classic::Node`, implementing `ClassicNode` and `DataflowNode<V>`; the scheme's node type is a trait object over them (`ruggine-engine/tests/dyn_nodes.rs`) |
+| `class X extends ClassicPreset.Node` | a struct holding a `classic::Node`, implementing `ClassicNode` and `DataflowNode<V>`; the scheme's node type is a trait object over them (`netcore-engine/tests/dyn_nodes.rs`) |

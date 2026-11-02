@@ -1,12 +1,12 @@
 # Migrating from rete
 
-How rete and rete-engine code reads in Ruggine. Every public symbol of `rete` 2.0.6 and
+How rete and rete-engine code reads in netcore-rs. Every public symbol of `rete` 2.0.6 and
 `rete-engine` 2.1.1 has a home here; where behavior differs, `tree/specs/port.md` says how and
 why. Names are rete's in snake_case.
 
 ## The shape of things
 
-| In rete (TypeScript) | In Ruggine (Rust) |
+| In rete (TypeScript) | In netcore-rs (Rust) |
 |---|---|
 | Objects shared by reference | `Rc`: the editor stores the `Rc` you hand it and gives back clones of it |
 | Mutating a node after adding it (`node.addInput(...)`) | The same, through `&self`: `node.add_input(...)` on the `Rc` |
@@ -19,7 +19,7 @@ why. Names are rete's in snake_case.
 
 ## rete
 
-| rete | Ruggine |
+| rete | netcore-rs |
 |---|---|
 | `new NodeEditor<Schemes>()` | `NodeEditor::<Schemes>::new()` (a cheap-clone handle) |
 | `editor.getNode(id)`, `getNodes()` | `get_node(id)`, `get_nodes()` |
@@ -48,7 +48,7 @@ why. Names are rete's in snake_case.
 
 ## ClassicPreset
 
-| rete | Ruggine (`ruggine::classic`) |
+| rete | netcore-rs (`netcore::classic`) |
 |---|---|
 | `new Socket('number')` | `Socket::new("number")` |
 | `new Input(socket, 'Label', true)` | `Input::new(socket).with_label("Label").with_multiple_connections(true)` |
@@ -70,7 +70,7 @@ why. Names are rete's in snake_case.
 
 ## rete-engine
 
-| rete-engine | Ruggine (`ruggine_engine`) |
+| rete-engine | netcore-rs (`netcore_engine`) |
 |---|---|
 | `new DataflowEngine<Schemes>()` | `DataflowEngine::<Schemes, V>::new()` |
 | `new DataflowEngine(node => ({ inputs: () => [...], outputs: () => [...] }))` | `DataflowEngine::with_configure(\|node\| PortSelection { inputs: ..., outputs: ... })` |
@@ -98,8 +98,8 @@ why. Names are rete's in snake_case.
 - **Futures are single-threaded** (`!Send`), like JavaScript. Use a local executor
   (`wasm_bindgen_futures::spawn_local`, Tokio's `LocalSet`) for async nodes.
 - **Background work:** in JS, work nobody awaits any more still finishes. Spawn
-  `ruggine::future::background()` once on your executor for the same, or it waits for your next
-  Ruggine call.
+  `netcore::future::background()` once on your executor for the same, or it waits for your next
+  netcore-rs call.
 - **Timing under concurrency:** results, events and the work that runs match rete's. The exact
   interleaving of several fetches in flight at once can differ (`tree/specs/port.md` §
   Futures).

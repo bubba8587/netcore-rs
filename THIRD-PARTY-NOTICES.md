@@ -1,6 +1,6 @@
 # Third-party notices
 
-Ruggine is a port of rete and rete-engine, and keeps their source under `upstream/` as the
+netcore-rs is a port of rete and rete-engine, and keeps their source under `upstream/` as the
 porting reference. Both are MIT licensed:
 
 - **rete** (https://github.com/retejs/rete): Copyright (c) 2023 "Ni55aN" Vitaliy Stoliarov.

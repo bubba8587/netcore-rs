@@ -1,5 +1,5 @@
 [package]
-name = "ruggine-bench"
+name = "netcore-bench"
 description = "Workloads timed against upstream rete by tools/bench/compare.mjs"
 version.workspace = true
 edition.workspace = true
@@ -11,12 +11,12 @@ publish.workspace = true
 crate-type = ["cdylib", "rlib"]
 
 [[bin]]
-name = "ruggine-bench"
+name = "netcore-bench"
 path = "src/main.rs"
 
 [dependencies]
-ruggine = { path = "../crates/ruggine" }
-ruggine-engine = { path = "../crates/ruggine-engine" }
+netcore = { path = "../crates/netcore" }
+netcore-engine = { path = "../crates/netcore-engine" }
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 wasm-bindgen = "0.2"

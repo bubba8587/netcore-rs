@@ -38,8 +38,8 @@ jobs:
         env:
           CARGO_TARGET_WASM32_UNKNOWN_UNKNOWN_RUNNER: wasm-bindgen-test-runner
         run: |
-          cargo test --target wasm32-unknown-unknown -p ruggine --test wasm
-          cargo test --target wasm32-unknown-unknown -p ruggine-engine --test wasm
+          cargo test --target wasm32-unknown-unknown -p netcore --test wasm
+          cargo test --target wasm32-unknown-unknown -p netcore-engine --test wasm
 
   oracle:
     runs-on: ubuntu-latest
