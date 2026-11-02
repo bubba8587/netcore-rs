@@ -11,6 +11,7 @@ crates/*/Cargo.toml
 rust-toolchain.toml
 .github/*
 .gitignore
+.gitattributes
 .dteignore
 dte.cfg
 

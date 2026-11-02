@@ -1,0 +1,15 @@
+# GitHub language stats (linguist): count the Rust port, not what surrounds it.
+
+# Pinned rete / rete-engine TypeScript, the port's spec (read-only).
+upstream/** linguist-vendored
+
+# DTE rule text and tool, copied in from DTE.
+dte-rules/** linguist-vendored
+tools/dte.py linguist-vendored
+
+# Node harnesses that run upstream to record oracle answers and benchmarks.
+tools/oracle/** linguist-detectable=false
+tools/bench/** linguist-detectable=false
+
+# Recorded upstream answers.
+fixtures/** linguist-generated
